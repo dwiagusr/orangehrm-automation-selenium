@@ -1,7 +1,7 @@
-package com.orangehrm.tests;
+package com.orangehrm.tests.auth;
 
 import com.orangehrm.base.BaseTest;
-import com.orangehrm.pages.LoginPage;
+import com.orangehrm.pages.auth.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

@@ -1,0 +1,52 @@
+package com.orangehrm.pages.pim;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+
+public class PIMPage {
+    private WebDriver driver;
+    private WebDriverWait wait;
+
+    // Locators for PIM Module
+    private By pimMenu = By.xpath("//a[contains(@href, 'viewPimModule')]");
+    private By addButton = By.xpath("//button[normalize-space()='Add']");
+    private By firstNameField = By.xpath("//input[@placeholder='First Name']");
+    private By middleNameField = By.xpath("//input[@placeholder='Middle Name']");
+    private By lastNameField = By.xpath("//input[@placeholder='Last Name']");
+    private By saveButton = By.xpath("//button[@type='submit']");
+
+    // Header used for assertion after saving
+    private By personalDetailsHeader = By.xpath("//h6[normalize-space()='Personal Details']");
+
+    public PIMPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+
+    // Navigates to the PIM menu from the dashboard
+    public void navigateToPIM() {
+        // Wait until the PIM menu is visible and clickable
+        wait.until(ExpectedConditions.elementToBeClickable(pimMenu)).click();
+    }
+
+    // Clicks the Add button to open the employee form
+    public void clickAddButton() {
+        driver.findElement(addButton).click();
+    }
+
+    // Fills in the employee details and clicks save
+    public void fillEmployeeDetails(String firstName, String middleName, String lastName) {
+        driver.findElement(firstNameField).sendKeys(firstName);
+        driver.findElement(middleNameField).sendKeys(middleName);
+        driver.findElement(lastNameField).sendKeys(lastName);
+        driver.findElement(saveButton).click();
+    }
+
+    // Validates if the "Personal Details" page is displayed after saving
+    public boolean isSuccessSaved() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(personalDetailsHeader)).isDisplayed();
+    }
+}

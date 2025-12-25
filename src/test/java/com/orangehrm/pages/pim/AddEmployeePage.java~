@@ -1,0 +1,49 @@
+package com.orangehrm.pages.pim;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+
+public class PIMPage {
+    private WebDriver driver;
+    private WebDriverWait wait;
+
+    // Locators for PIM Module
+    private By pimMenu = By.xpath("//b[text()='PIM']");
+    private By addButton = By.id("btnAdd");
+    private By firstNameField = By.id("firstName");
+    private By lastNameField = By.id("lastName");
+    private By saveButton = By.id("btnSave");
+
+    // Header used for assertion after saving
+    private By personalDetailsHeader = By.xpath("//h1[text()='Personal Details']");
+
+    public PIMPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+
+    // Navigates to the PIM menu from the dashboard
+    public void navigateToPIM() {
+        driver.findElement(pimMenu).click();
+    }
+
+    // Clicks the Add button to open the employee form
+    public void clickAddButton() {
+        driver.findElement(addButton).click();
+    }
+
+    // Fills in the employee details and clicks save
+    public void fillEmployeeDetails(String firstName, String lastName) {
+        driver.findElement(firstNameField).sendKeys(firstName);
+        driver.findElement(lastNameField).sendKeys(lastName);
+        driver.findElement(saveButton).click();
+    }
+
+    // Validates if the "Personal Details" page is displayed after saving
+    public boolean isSuccessSaved() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(personalDetailsHeader)).isDisplayed();
+    }
+}
