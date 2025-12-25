@@ -20,6 +20,7 @@ public class BaseTest {
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        
 
         // 3. Masukkan options ke dalam constructor ChromeDriver
         driver = new ChromeDriver(options);
