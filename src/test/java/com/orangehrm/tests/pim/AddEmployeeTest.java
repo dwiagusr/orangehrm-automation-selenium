@@ -2,9 +2,12 @@ package com.orangehrm.tests.pim;
 
 import com.orangehrm.base.BaseTest;
 import com.orangehrm.pages.auth.LoginPage;
-import com.orangehrm.pages.pim.PIMPage;// Imported from the new auth package
+import com.orangehrm.pages.pim.PIMPage;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.time.Duration;
 
 public class AddEmployeeTest extends BaseTest {
 
@@ -13,6 +16,9 @@ public class AddEmployeeTest extends BaseTest {
         // Step 1: Initialize LoginPage and Login to application
         LoginPage loginPage = new LoginPage(driver);
         loginPage.loginToApplication("Admin", "admin123");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("dashboard"));
 
         // Step 2: Initialize PIMPage and navigate to PIM module
         PIMPage pimPage = new PIMPage(driver);

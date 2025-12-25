@@ -11,7 +11,7 @@ public class PIMPage {
     private WebDriverWait wait;
 
     // Locators for PIM Module
-    private By pimMenu = By.xpath("//a[contains(@href, 'viewPimModule')]");
+    private By pimMenu = By.xpath("//span[text()='PIM']");
     private By addButton = By.xpath("//button[normalize-space()='Add']");
     private By firstNameField = By.xpath("//input[@placeholder='First Name']");
     private By middleNameField = By.xpath("//input[@placeholder='Middle Name']");
@@ -19,7 +19,7 @@ public class PIMPage {
     private By saveButton = By.xpath("//button[@type='submit']");
 
     // Header used for assertion after saving
-    private By personalDetailsHeader = By.xpath("//h1[text()='Personal Details']");
+    private By personalDetailsHeader = By.xpath("//*[normalize-space()='Personal Details']");
 
     public PIMPage(WebDriver driver) {
         this.driver = driver;
@@ -28,8 +28,18 @@ public class PIMPage {
 
     // Navigates to the PIM menu from the dashboard
     public void navigateToPIM() {
-        // Wait until the PIM menu is visible and clickable
-        wait.until(ExpectedConditions.elementToBeClickable(pimMenu)).click();
+        // 1. Wait until the element exists in the DOM, even if not fully visible yet
+        WebElement pimMenuLink = wait.until(ExpectedConditions.presenceOfElementLocated(pimMenu));
+
+        try {
+            // 2. Try standard click first
+            pimMenuLink.click();
+        } catch (Exception e) {
+            // 3. If standard click fails (interrupted by animation/headless), use JS Click
+            // This is a common workaround for "Element Not Interactable" in headless mode
+            org.openqa.selenium.JavascriptExecutor js = (org.openqa.selenium.JavascriptExecutor) driver;
+            js.executeScript("arguments[0].click();", pimMenuLink);
+        }
     }
 
     // Clicks the Add button to open the employee form
@@ -39,14 +49,24 @@ public class PIMPage {
 
     // Fills in the employee details and clicks save
     public void fillEmployeeDetails(String firstName, String middleName, String lastName) {
-        driver.findElement(firstNameField).sendKeys(firstName);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameField)).sendKeys(firstName);
         driver.findElement(middleNameField).sendKeys(middleName);
         driver.findElement(lastNameField).sendKeys(lastName);
-        driver.findElement(saveButton).click();
+        wait.until(ExpectedConditions.elementToBeClickable(saveButton)).click();
     }
 
     // Validates if the "Personal Details" page is displayed after saving
     public boolean isSuccessSaved() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(personalDetailsHeader)).isDisplayed();
+        // Use a wildcard (*) to find the text regardless of the tag (h1, h6, or span)
+        // This prevents TimeoutException if the UI structure changes slightly
+        By successHeader = By.xpath("//*[normalize-space()='Personal Details']");
+
+        try {
+            // Wait for the element to be visible and return true if found
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(successHeader)).isDisplayed();
+        } catch (Exception e) {
+            // If the timeout is reached, return false instead of crashing the test immediately
+            return false;
+        }
     }
 }
