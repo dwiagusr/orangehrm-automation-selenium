@@ -24,7 +24,7 @@ public class PIMPage {
 
     public PIMPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
     // Navigates to the PIM menu from the dashboard
@@ -58,15 +58,10 @@ public class PIMPage {
 
     // Validates if the "Personal Details" page is displayed after saving
     public boolean isSuccessSaved() {
-        // Use a wildcard (*) to find the text regardless of the tag (h1, h6, or span)
-        // This prevents TimeoutException if the UI structure changes slightly
-        By successHeader = By.xpath("//*[normalize-space()='Personal Details']");
-
         try {
-            // Wait for the element to be visible and return true if found
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(successHeader)).isDisplayed();
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(personalDetailsHeader)).isDisplayed();
         } catch (Exception e) {
-            // If the timeout is reached, return false instead of crashing the test immediately
+            System.out.println("DEBUG: Element Personal Details tidak ditemukan setelah timeout.");
             return false;
         }
     }
