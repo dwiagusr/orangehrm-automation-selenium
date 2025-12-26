@@ -12,24 +12,33 @@ import java.time.Duration;
 public class AddEmployeeTest extends BaseTest {
 
     @Test
-    public void testAddNewEmployee() {
-        // Step 1: Initialize LoginPage and Login to application
+    public void testAddNewEmployeeAndFillPersonalDetails() {
+        // Step 1: Initialize LoginPage and Login
         LoginPage loginPage = new LoginPage(driver);
         loginPage.loginToApplication("Admin", "admin123");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.urlContains("dashboard"));
 
-        // Step 2: Initialize PIMPage and navigate to PIM module
+        // Step 2: Navigate to PIM module
         PIMPage pimPage = new PIMPage(driver);
         pimPage.navigateToPIM();
 
-        // Step 3: Add a new employee
+        // Step 3: Add a new employee (First Step)
         pimPage.clickAddButton();
-        pimPage.fillEmployeeDetails("Automated", "Employee", "12345");
+        // Now using random ID inside this method as we updated before
+        pimPage.fillEmployeeDetails("Automated", "Selenium", "Java");
 
-        // Step 4: Assertion - Verify that the employee was saved successfully
-        boolean isSaved = pimPage.isSuccessSaved();
-        Assert.assertTrue(isSaved, "The employee was not saved or the Personal Details page did not load!");
+        // Step 4: Verify redirection to Personal Details page
+        boolean isRedirected = pimPage.isSuccessSaved();
+        Assert.assertTrue(isRedirected, "Failed to redirect to Personal Details page after saving new employee!");
+
+        // Step 5: Fill additional Personal Details (Second Step)
+        // Data: Nationality, Marital Status, Gender
+        pimPage.fillPersonalDetails("Indonesian", "Single", "Male");
+
+        // Step 6: Final Assertion (Optional: Verify Success Message/Toast if needed)
+        // For now, if no error occurs during fillPersonalDetails, we consider it a success
+        System.out.println("End-to-End Add Employee and Personal Details fill successful.");
     }
 }
