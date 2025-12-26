@@ -16,16 +16,21 @@ public class PIMPage {
     private final WebDriverWait wait;
     private static final Logger logger = LogManager.getLogger(PIMPage.class);
 
-    // --- Locators ---
+    // --- Add Employee Locators ---
     private final By pimMenu = By.xpath("//span[text()='PIM']");
     private final By addButton = By.xpath("//button[normalize-space()='Add']");
     private final By firstNameField = By.xpath("//input[@placeholder='First Name']");
     private final By middleNameField = By.xpath("//input[@placeholder='Middle Name']");
     private final By lastNameField = By.xpath("//input[@placeholder='Last Name']");
-    // Robust Locator: Finding Input based on the "Employee Id" label
     private final By employeeIdField = By.xpath("//label[text()='Employee Id']/ancestor::div[contains(@class,'oxd-input-group')]//input");
     private final By saveButton = By.xpath("//button[@type='submit']");
+    // --- Personal Details Locators ---
     private final By personalDetailsHeader = By.xpath("//h6[normalize-space()='Personal Details']");
+    private final By nationalityDropdown = By.xpath("//label[text()='Nationality']/ancestor::div[contains(@class,'oxd-input-group')]//div[@class='oxd-select-text-input']");
+    private final By maritalStatusDropdown = By.xpath("//label[text()='Marital Status']/ancestor::div[contains(@class,'oxd-input-group')]//div[@class='oxd-select-text-input']");
+    private final By maleRadio = By.xpath("//label[text()='Male']/span");
+    private final By femaleRadio = By.xpath("//label[text()='Female']/span");
+    private final By savePersonalDetailsBtn = By.xpath("//label[text()='Nationality']/ancestor::form//button[@type='submit']");
 
     public PIMPage(WebDriver driver) {
         this.driver = driver;
@@ -58,11 +63,9 @@ public class PIMPage {
      */
     public void fillEmployeeDetails(String firstName, String middleName, String lastName) {
         logger.info("Entering details for: {} {} {}", firstName, middleName, lastName);
-
         wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameField)).sendKeys(firstName);
         driver.findElement(middleNameField).sendKeys(middleName);
         driver.findElement(lastNameField).sendKeys(lastName);
-
         // Handle Employee ID: Clear existing and input random
         WebElement idInput = wait.until(ExpectedConditions.visibilityOfElementLocated(employeeIdField));
         String randomId = String.valueOf(1000 + new Random().nextInt(9000));
@@ -74,6 +77,36 @@ public class PIMPage {
 
         wait.until(ExpectedConditions.elementToBeClickable(saveButton)).click();
         logger.info("Save button clicked.");
+    }
+
+    /**
+     * Helper method to handle OrangeHRM custom dropdowns.
+     */
+    private void selectDropdownOption(By dropdownLocator, String optionText) {
+        wait.until(ExpectedConditions.elementToBeClickable(dropdownLocator)).click();
+        // Dynamic Locator Wrapper for Dropdown Options
+        String dropdownOptionWrapper = "//div[@role='listbox']//span[text()='%s']";
+        By option = By.xpath(String.format(dropdownOptionWrapper, optionText));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(option)).click();
+    }
+
+    /**
+     * Fills the Personal Details form after redirection.
+     */
+    public void fillPersonalDetails(String nationality, String maritalStatus, String gender) {
+        logger.info("Filling Personal Details: {}, {}, {}", nationality, maritalStatus, gender);
+        // 1. Handle Dropdown
+        selectDropdownOption(nationalityDropdown, nationality);
+        selectDropdownOption(maritalStatusDropdown, maritalStatus);
+        // 2. Handle Gender Radio Button
+        if (gender.equalsIgnoreCase("Male")) {
+            driver.findElement(maleRadio).click();
+        } else {
+            driver.findElement(femaleRadio).click();
+        }
+        // 3. Save
+        wait.until(ExpectedConditions.elementToBeClickable(savePersonalDetailsBtn)).click();
+        logger.info("Personal Details saved.");
     }
 
     /**
