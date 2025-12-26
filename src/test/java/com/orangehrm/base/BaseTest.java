@@ -17,7 +17,7 @@ public class BaseTest {
 
         // 2. Tambahkan argument agar Chrome jalan di background (Headless)
         // Ini wajib ada supaya tidak error "Chrome instance exited" di GitHub Actions
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--window-size=1920,1080");
