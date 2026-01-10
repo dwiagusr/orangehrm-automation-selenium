@@ -38,3 +38,20 @@ build/
 ### Mac OS ###
 .DS_Store
 
+# --- QA Automation Specific ---
+# Allure reports and results
+allure-results/
+allure-report/
+.allure/
+
+# Logs (Log4j output)
+*.log
+logs/
+
+# Excel Temporary Files (Created by Apache POI/Excel)
+~$*.xlsx
+~$*.xls
+
+# TestNG output
+test-output/
+

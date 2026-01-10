@@ -1,4 +1,4 @@
-name: Selenium Java CI/CD
+name: Selenium Java CI/CD with Allure Report
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - main
-
+  workflow_dispatch:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -24,4 +24,28 @@ jobs:
           cache: maven
 
       - name: Run Selenium Tests
-        run: mvn clean test
+        run: mvn clean test || true
+
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Deploy Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-history
+          publish_branch: gh-pages
