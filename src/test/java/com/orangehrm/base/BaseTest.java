@@ -9,6 +9,9 @@ import java.time.Duration;
 
 public class BaseTest {
     protected WebDriver driver;
+    public WebDriver getDriver() {
+        return driver;
+    }
 
     @BeforeMethod
     public void setUp() {

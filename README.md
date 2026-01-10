@@ -45,6 +45,12 @@ orangehrm-automation
 | **Log4j2** | Execution Logs and Debugging |
 | **Maven** | Project Management and Dependency Control |
 
+## 📊 Automated Reporting & CI/CD
+This project is integrated with **GitHub Actions** to provide a fully automated testing pipeline.
+
+* **Live Test Report:** [![Allure Report](https://img.shields.io/badge/Allure-Report-green?style=for-the-badge&logo=allure)](https://dwiagusr.github.io/cypress-ecommerce-automation/)
+  > 🔗 **[Click here to view the latest Live Allure Dashboard](https://dwiagusr.github.io/orangehrm-automation-selenium/)**
+
 ## ⚙️ How to Run
 
 1. **Clone the repository:**
