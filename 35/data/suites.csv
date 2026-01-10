@@ -1,0 +1,6 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","54859","testAddNewEmployeeDDT","OrangeHRM Suite","Sat Jan 10 17:52:38 UTC 2026","passed","Sat Jan 10 17:53:33 UTC 2026","com.orangehrm.tests.pim.AddEmployeeTest","Full Regression","com.orangehrm.tests.pim.AddEmployeeTest","testAddNewEmployeeDDT"
+"","2183","testValidLogin","OrangeHRM Suite","Sat Jan 10 17:51:39 UTC 2026","passed","Sat Jan 10 17:51:41 UTC 2026","com.orangehrm.tests.auth.LoginTest","Full Regression","com.orangehrm.tests.auth.LoginTest","testValidLogin"
+"","54028","testAddNewEmployeeDDT","OrangeHRM Suite","Sat Jan 10 17:54:29 UTC 2026","passed","Sat Jan 10 17:55:23 UTC 2026","com.orangehrm.tests.pim.AddEmployeeTest","Full Regression","com.orangehrm.tests.pim.AddEmployeeTest","testAddNewEmployeeDDT"
+"","53832","testAddNewEmployeeDDT","OrangeHRM Suite","Sat Jan 10 17:53:34 UTC 2026","passed","Sat Jan 10 17:54:28 UTC 2026","com.orangehrm.tests.pim.AddEmployeeTest","Full Regression","com.orangehrm.tests.pim.AddEmployeeTest","testAddNewEmployeeDDT"
+"","53125","testAddNewEmployeeDDT","OrangeHRM Suite","Sat Jan 10 17:51:44 UTC 2026","passed","Sat Jan 10 17:52:37 UTC 2026","com.orangehrm.tests.pim.AddEmployeeTest","Full Regression","com.orangehrm.tests.pim.AddEmployeeTest","testAddNewEmployeeDDT"
